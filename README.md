@@ -1,6 +1,8 @@
 ### SIMPLELY START
 ```D:\dev\electron9\src\out\Testing\electron.exe D:\dev\electron-tabs\demo```
 
+vs code ：https://docs.microsoft.com/zh-cn/windows/nodejs/setup-on-windows
+
 # electron-tabs
 
 > Simple tabs for Electron applications
