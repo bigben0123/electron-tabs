@@ -3,10 +3,18 @@
 
 <head>
   <title>electron-tabs-demo</title>
+  <!-- normally but for demo: 
+  <link rel="stylesheet" href="node_modules/electron-tabs/electron-tabs.css">
+  -->
   <link rel="stylesheet" href="../electron-tabs.css">
 </head>
 <body style="margin:0">
-
+	<input type="text" id="firstname" name="firstname"  value="http://192.168.50.206:8080">  
+	 
+	<button id="go-button">go</button>
+	<button id="back-button">back</button>
+	<button id="forward-button">forward</button>
+	
 <div class="etabs-tabgroup">
   <div class="etabs-tabs"></div>
   <div class="etabs-buttons"></div>
@@ -20,13 +28,14 @@
 
   let tabGroup = new TabGroup({
     newTab: {
-      title: 'New Tab'
+      title: 'New Tab',
+      src: 'http://www.baidu.com',
     }
   });
 
   tabGroup.addTab({
     title: 'Google',
-    src: 'http://google.com',
+    src: 'http://www.baidu.com',
   });
 
   tabGroup.addTab({
@@ -36,6 +45,32 @@
     active: true
   });
 
+tabGroup.on("tab-added", (tab, tabGroup) => { 
+	console.log(" === on tab added === ")
+//	let webview = tab.webview;
+//webview.loadURL("http://www.sohu.com");
+	 });
+
+
+
+const goButton = document.querySelector('#go-button');
+const backButton = document.querySelector('#back-button');
+const forwardButton = document.querySelector('#forward-button');
+
+goButton.addEventListener('click', () => {
+//	const firstname = document.querySelector('#firstname');
+	
+	 var url = document.getElementById("firstname").value;
+	// url='http://www.baidu.com'
+   // document.getElementById("demo").innerHTML = x;
+	  tabGroup.addTab({
+    title: "xxxxx",
+    src: url,
+    visible: true,
+    active: true
+  });
+  //alert(x);
+});
 </script>
 </body>
 </html>
