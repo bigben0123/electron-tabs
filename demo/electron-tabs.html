@@ -8,69 +8,101 @@
   -->
   <link rel="stylesheet" href="../electron-tabs.css">
 </head>
+
 <body style="margin:0">
-	<input type="text" id="firstname" name="firstname"  value="http://192.168.50.206:8080">  
-	 
-	<button id="go-button">go</button>
-	<button id="back-button">back</button>
-	<button id="forward-button">forward</button>
-	
-<div class="etabs-tabgroup">
-  <div class="etabs-tabs"></div>
-  <div class="etabs-buttons"></div>
-</div>
-<div class="etabs-views"></div>
+  <input type="text" id="firstname" name="firstname" value="http://192.168.50.206:8080">
+
+  <button id="go-button">go</button>
+  <button id="back-button">back</button>
+  <button id="forward-button">forward</button>
+
+  <div class="etabs-tabgroup">
+    <div class="etabs-tabs"></div>
+    <div class="etabs-buttons"></div>
+  </div>
+  <div class="etabs-views"></div>
 
 
-<script>
-  //const TabGroup = require('electron-tabs') normally but for demo :
-  const TabGroup = require("../index");
+  <script>
+    //const TabGroup = require('electron-tabs') normally but for demo :
+    const TabGroup = require("../index");
 
-  let tabGroup = new TabGroup({
-    newTab: {
-      title: 'New Tab',
+    let tabGroup = new TabGroup({
+      newTab: {
+        title: 'New Tab',
+        src: 'http://www.baidu.com',
+      }
+    });
+
+    tabGroup.on("tab-added", (tab, tabGroup) => {
+      console.log(" === on tab added === ")
+      let webview = tab.webview;
+      webview.allowpopups = true;
+      webview.addEventListener('new-window', async (e) => {
+        const protocol = require('url').parse(e.url).protocol
+        if (protocol === 'http:' || protocol === 'https:') {
+          await tabGroup.addTab({
+            title: "tab",
+            src: e.url,
+            visible: true,
+            active: true
+          });
+
+        }
+      })
+      //webview.loadURL("http://www.sohu.com");
+    });
+
+    tabGroup.addTab({
+      title: 'Google',
       src: 'http://www.baidu.com',
-    }
-  });
+    });
 
-  tabGroup.addTab({
-    title: 'Google',
-    src: 'http://www.baidu.com',
-  });
-
-  tabGroup.addTab({
-    title: "Electron",
-    src: "http://electron.atom.io",
-    visible: true,
-    active: true
-  });
-
-tabGroup.on("tab-added", (tab, tabGroup) => { 
-	console.log(" === on tab added === ")
-//	let webview = tab.webview;
-//webview.loadURL("http://www.sohu.com");
-	 });
+    tabGroup.addTab({
+      title: "Electron",
+      src: "http://electron.atom.io",
+      visible: true,
+      active: true
+    });
 
 
 
-const goButton = document.querySelector('#go-button');
-const backButton = document.querySelector('#back-button');
-const forwardButton = document.querySelector('#forward-button');
+    const goButton = document.querySelector('#go-button');
+    const backButton = document.querySelector('#back-button');
+    const forwardButton = document.querySelector('#forward-button');
 
-goButton.addEventListener('click', () => {
-//	const firstname = document.querySelector('#firstname');
-	
-	 var url = document.getElementById("firstname").value;
-	// url='http://www.baidu.com'
-   // document.getElementById("demo").innerHTML = x;
-	  tabGroup.addTab({
-    title: "xxxxx",
-    src: url,
-    visible: true,
-    active: true
-  });
-  //alert(x);
-});
-</script>
+    goButton.addEventListener('click', () => {
+      //	const firstname = document.querySelector('#firstname');
+
+      var url = document.getElementById("firstname").value;
+      // url='http://www.baidu.com'
+      // document.getElementById("demo").innerHTML = x;
+      tabGroup.addTab({
+        title: "tab",
+        src: url,
+        visible: true,
+        active: true
+      });
+      //alert(x);
+    });
+
+    backButton.addEventListener('click', () => {
+      let tab = tabGroup.getActiveTab();
+      let webview = tab.webview;
+      if (webview.canGoBack()) {
+        webview.goBack();
+      }
+    });
+
+    forwardButton.addEventListener('click', () => {
+      let tab = tabGroup.getActiveTab();
+      let webview = tab.webview;
+      if (webview.canGoForward()) {
+        webview.goForward();
+      }
+    });
+
+  </script>
 </body>
+
 </html>

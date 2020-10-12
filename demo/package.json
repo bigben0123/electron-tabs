@@ -1,4 +1,5 @@
 {
   "name": "electron-tabs-demo",
+  "start": "electron  ./demo",
   "main": "app.js"
 }
