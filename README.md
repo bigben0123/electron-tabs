@@ -1,3 +1,6 @@
+### SIMPLELY START
+```D:\dev\electron9\src\out\Testing\electron.exe D:\dev\electron-tabs\demo```
+
 # electron-tabs
 
 > Simple tabs for Electron applications
